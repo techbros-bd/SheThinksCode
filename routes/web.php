@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +13,30 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('public.index');
 });
+Route::get('/team', function () {
+    return view('public.team');
+});
+Route::get('/events', function () {
+    return view('public.events');
+});
+Route::get('/programs', function () {
+    return view('public.programs');
+});
+Route::get('/faq', function () {
+    return view('public.faq');
+});
+Route::get('/contact', function () {
+    return view('public.contact');
+});
+
+Route::get('subscribe/{token}', "SubscriberController@verify");
+Route::post('subscribe', "SubscriberController@subscribe");
+
+Auth::routes();
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('subscriber', 'SubscriberController');
+    Route::resource('setting', 'SettingsController');
+});
+Route::get('/home', 'HomeController@index')->name('home');
